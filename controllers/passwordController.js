@@ -1,5 +1,5 @@
-const password = require("secure-random-password");
-const { lastCheck } = require("../helper/validate");
+const password = require('secure-random-password');
+const { lastCheck } = require('../helper/validate');
 
 // this functions generates the passwords with the given parameters by using above required package
 exports.passwordGenerator = (req, res) => {
@@ -33,16 +33,21 @@ exports.passwordGenerator = (req, res) => {
             );
          }
       } while (numberOfPasswords < total);
+
+      if (lastCheck(req, res, result)) {
+         // console.log(lastCheck(req, res, result));
+         res.status(200).json({
+            status: 'success',
+            data: {
+               result,
+            },
+         });
+      }
    } catch (error) {
       console.log(error);
+      res.json({
+         status: 'error',
+         message: 'Something went very wrong!!!!',
+      });
    }
-
-   lastCheck(req, res, result);
-
-   res.status(200).json({
-      status: "success",
-      data: {
-         result,
-      },
-   });
 };
